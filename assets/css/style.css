@@ -1,0 +1,60 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  padding: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+@layer base {
+  .contentBlock li {
+    @apply list-disc;
+    @apply bg-purple-300 hover:bg-purple-400;
+    @apply m-2 p-3;
+    @apply rounded-lg;
+    @apply shadow-md hover:shadow-lg;
+    @apply transform hover:scale-105 transition-all duration-300;
+  }
+
+  .contentBlock h1 {
+    @apply text-xl
+  }
+
+  .contentBlock h2 {
+    @apply text-xl
+  }
+
+  .contentBlock li span {
+    @apply text-white font-bold;
+  }
+}
+
+#category {
+  font-family: Staatliches;
+  font-weight: 500;
+}
+
+#banner {
+  margin: 20px;
+  height: 800px;
+}
+
+#editor {
+  font-size: 16px;
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+.uk-navbar-container {
+  background: #fff !important;
+  font-family: Staatliches;
+}
+
+img:hover {
+  opacity: 1;
+  transition: opacity 0.25s cubic-bezier(0.39, 0.575, 0.565, 1);
+}
