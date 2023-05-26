@@ -9,6 +9,10 @@ const Quiz = ({ quiz }) => {
   const [gameFinished, setGameFinished] = useState(false);
   const [disableNext, setDisableNext] = useState(false);
 
+  if (quiz.length === 0) {
+    return null;
+  }
+
   useEffect(() => {
     if (showAlert) {
       setTimeout(() => {
