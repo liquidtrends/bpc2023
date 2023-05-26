@@ -4,13 +4,13 @@ import ReactMarkdown from "react-markdown";
 import Seo from "../../components/seo";
 import Layout from "../../components/layout";
 import Hero from "../../components/hero";
-import ProgressIndicator from "../../components/ProgressIndicator";
+import ProgressIndicator from "../../components/progressIndicator";
 
 import { fetchAPI } from "../../lib/api";
 import { getStrapiMedia } from "../../lib/media";
+import Quiz from "../../components/quiz";
 
 const Article = ({ article }) => {
-
   const imageUrl = getStrapiMedia(article.attributes.image);
   const audioFileUrl = getStrapiMedia(article.attributes.audioFile);
   const headerImageUrl = getStrapiMedia(article.attributes.HeaderImage);
@@ -22,6 +22,10 @@ const Article = ({ article }) => {
     metaDescription: article.attributes.description,
     shareImage: article.attributes.image,
     article: true,
+  };
+
+  const getAllQuiz = () => {
+    return article.attributes.contentBlocks.filter((block) => block.Question);
   };
 
   return (
@@ -57,27 +61,37 @@ const Article = ({ article }) => {
               <ReactMarkdown className="text-lg" children={article.attributes.content} />
               {article.attributes.contentBlocks &&
                 article.attributes.contentBlocks.map((block, index) => (
-                <div key={index} className="my-12 space-y-8">
-                  <h2 className="text-3xl font-bold text-gray-900">{block.sectionTitle}</h2>
-                  {block.sectionImages && <img className="pt-10 w-full" src={getStrapiMedia(block.sectionImages)} />}
-                  <ReactMarkdown className="contentBlock text-lg space-y-8" children={block.sectionContent} />
-                  {block.sectionVideo && (
-                    <div>
-                      <video className="pt-10 w-full" controls src={getStrapiMedia(block.sectionVideo)} />
-                    </div>
-                  )}
-                  <h1>{block.Question}</h1>
-                  <ul>
-                    <li>{block.Answers}</li>
-                  </ul>
-                </div>
-              ))}
+                  <div key={index} className="my-12 space-y-8">
+                    <h2 className="text-3xl font-bold text-gray-900">
+                      {block.sectionTitle}
+                    </h2>
+                    {block.sectionImages && (
+                      <img
+                        className="pt-10 w-full"
+                        src={getStrapiMedia(block.sectionImages)}
+                      />
+                    )}
+                    <ReactMarkdown
+                      className="contentBlock text-lg space-y-8"
+                      children={block.sectionContent}
+                    />
+                    {block.sectionVideo && (
+                      <div>
+                        <video
+                          className="pt-10 w-full"
+                          controls
+                          src={getStrapiMedia(block.sectionVideo)}
+                        />
+                      </div>
+                    )}
+                  </div>
+                ))}
+              <Quiz quiz={getAllQuiz()} />
               <hr />
             </div>
           </div>
         </div>
       </div>
-
     </Layout>
   );
 };
@@ -100,7 +114,15 @@ export async function getStaticProps({ params }) {
     filters: {
       slug: params.slug,
     },
-    populate: ["image", "audioFile", "HeaderImage", "contentBlocks" ,"contentBlocks.sectionVideo", "contentBlocks.sectionImages", "contentBlocks.Answer"],
+    populate: [
+      "image",
+      "audioFile",
+      "HeaderImage",
+      "contentBlocks",
+      "contentBlocks.sectionVideo",
+      "contentBlocks.sectionImages",
+      "contentBlocks.Answers",
+    ],
   });
 
   return {
